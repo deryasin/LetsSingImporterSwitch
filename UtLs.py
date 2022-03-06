@@ -16,9 +16,15 @@ from PIL import Image
 
 # TODO: CHECK DATA AFTER SONDERZEICHEN
 # TODO: FIX RESULT SCREEN PICTURE
-# TODO: FIX NAME FILE GENERATION (TESTING)
+# TODO: FIX NAME FILE GENERATION (Fixed, but not tested)
 # TODO: FIX LYRICS
 # TODO: REMOVE FUNCTION
+# TODO: FIX HELPPAGE AND FILL WITH MORE INFORMATIONS
+# TODO: ADD README
+# TODO: IMPLEMENT TXT DOWNLOADER
+# TODO: ADD API FOR ULTRASTAR DBs (?)
+# TODO: REMOVE DEBUG OUTPUT / ADD VERBOSE (?)
+# TODO: REMOVE 100 SONGS LIMIT
 parser = argparse.ArgumentParser(description= "LetsSingImporter - Please choose a Mode!")
 parser.add_argument('--downloader', help="Mode for downloading Youtube Videos and converting them to Lets Sing Files", action='store_true')
 parser.add_argument('--move', help="Mode to move files into the needed Filetree", action='store_true')
@@ -61,16 +67,6 @@ else:
         sys.exit(0)
 args, unknown = parser.parse_known_args()
 SongFolder = args.song
-
-def checkFiles(Folder, Name, array):
-    missing = []
-    # [".mp4", ".ogg", ".png",".txt", ".vxla", "_InGameLoading.png", "_Result.png"]
-    for entry in array:
-        if not os.path.isfile(f"{Folder}/{Name}{entry}"):
-            missing.append(f"{Name}{entry}")
-    if missing is not []:
-        print(f'Found missing Files: {", ".join(missing)}')
-        sys.exit(1)
 
 class MyLogger(object):
     def debug(self, msg):
@@ -196,7 +192,6 @@ class move:
             if self.Song in line[2]:
                 self.SongMeta.update({"UID": line[1]})
                 self.SongMeta.update({"ID": line[2]})
-                print(self.SongMeta)
                 return True
         return False
 
@@ -228,7 +223,6 @@ class move:
             else:
                 self.SongMeta.update({"UID": int(self.ContentTSV[len(self.ContentTSV)-1][1]) - 1})
             self.SongMeta.update({"ID": self.Song})
-            print("test")
             print(self.SongMeta)
         for line in self.ContentTXT:
             line = line.replace("\n", "").replace(":", " ")
@@ -239,7 +233,6 @@ class move:
                 continue
             if line.startswith("#TITLE"):
                 self.SongMeta.update({"TITLE": line.replace("#TITLE ", "")})
-                print(line)
                 continue
             if line.startswith("#GENRE") and args.genre is None:
                 self.SongMeta.update({"GENRE": line.replace("#GENRE ", "")})
@@ -285,7 +278,6 @@ class move:
     def generateFiles(self):
         AlreadyExists = False
         for line in self.ContentTSV:
-            print(line)
             if self.Song in line[2]:
                 AlreadyExists = True
                 print("MATCH")
@@ -300,7 +292,6 @@ class move:
         self.FileTSV.close()
         AlreadyAdded = False
         for line in self.ContentTXT:
-            print(line)
             if self.SongMeta["ID"] in line:
                 AlreadyAdded = True
                 self.FileTXT.write(self.SongMeta["ID"] + "\r\n")
@@ -334,7 +325,7 @@ class move:
         shutil.copy(f"{self.BaseFilesFolder}/SongsDLC.tsv", f"{self.AtmosphereBaseFolder}/SongsDLC.tsv")
         shutil.copy(f"{self.SongFolder}/{self.Song}_meta.xml", f"{self.AtmosphereDLCFolder}/{self.Song}_meta.xml")
 
-
+# Credit => dh4rry
 class UltraStar2LetsSing:
     def __init__(self, input):
         self.SongTXT = input
