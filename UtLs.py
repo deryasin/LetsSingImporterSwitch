@@ -25,6 +25,8 @@ from PIL import Image
 # TODO: ADD API FOR ULTRASTAR DBs (?)
 # TODO: REMOVE DEBUG OUTPUT / ADD VERBOSE (?)
 # TODO: REMOVE 100 SONGS LIMIT
+# TODO: ASK BEFORE REPLACE
+# TODO: FIX NOTES AFTER LYRICS WITHOUT NOTES HAVE THE WRONG LYRICS / Fix Lyrics Generation
 parser = argparse.ArgumentParser(description= "LetsSingImporter - Please choose a Mode!")
 parser.add_argument('--downloader', help="Mode for downloading Youtube Videos and converting them to Lets Sing Files", action='store_true')
 parser.add_argument('--move', help="Mode to move files into the needed Filetree", action='store_true')
@@ -40,6 +42,8 @@ if args.downloader == True and args.move == False:
     parser.add_argument('--url', required=False, help="Youtube URL")
     parser.add_argument('--txt', default=False, help="TXT File from Ultrastar")
     parser.add_argument('--generate-vxla', action='store_true', help="Generate VXLA File")
+    parser.add_argument('--keep-lyrics', action='store_true',
+                        help="Keeps the text the lyrics for freestyle notes, but breaks the lyrics on screen under the notes")
     parser.add_argument('--randomize', action='store_true',
                         help="(NOT IMPLEMENTED) Activate to set random Images for backgrounds")
     parser.add_argument('--folder', default="./songs", help="Folder to save files")
@@ -62,6 +66,8 @@ else:
         parser.add_argument("--difficulty", default="Difficulty3")
         parser.add_argument("--lineone", default=None)
         parser.add_argument("--linetwo", default=None)
+        parser.add_argument('--generate-vxla', action='store_true', help="Generate VXLA File")
+        parser.add_argument('--keep-lyrics', action='store_true', help="Keeps the text the lyrics for freestyle notes, but breaks the lyrics underneath the notes")
     else:
         parser.print_help()
         sys.exit(0)
@@ -160,9 +166,9 @@ class move:
         self.BaseFilesFolder = f"{args.folder}/basefiles"
         self.BaseFilesFolderAtmosphere = f"{args.folder}/basefiles_atmosphere"
         self.SongFolder = f"{args.folder}/{args.song}"
-        self.AtmosphereBaseFolder = f"{args.atmosphere_folder}/contents/{args.titleid}/romfs/Data/StreamingAssets/"
-        self.AtmosphereDLCFolder = f"{args.atmosphere_folder}/contents/{args.dlcid}/romfs/"
-        self.AtmosphereMediaFolder = f"{args.atmosphere_folder}/contents/{args.dlcid}/romfs/Songs/"
+        self.AtmosphereBaseFolder = f"{args.atmosphere_folder}/contents/{args.titleid}/romfs/Data/StreamingAssets"
+        self.AtmosphereDLCFolder = f"{args.atmosphere_folder}/contents/{args.dlcid}/romfs"
+        self.AtmosphereMediaFolder = f"{args.atmosphere_folder}/contents/{args.dlcid}/romfs/Songs"
         # Files
         self.ContentTXT = ""
         self.ContentTSV = ""
@@ -374,6 +380,17 @@ class UltraStar2LetsSing:
                     start = last_page
                     sing_it["pages"].append(
                         {"t1": start, "t2": end, "value": ""})
+            elif args.keeplyrics:
+                if note[0] == "F":
+                    start = float(note[1]) * 60 / bpm / 4 + gap
+                    end = start + float(note[2]) * 60 / bpm / 4
+                    if note[4] == 0:
+                        sing_it["text"].append({"t1": start, "t2": end, "value": ""})
+                    else:
+                        sing_it["text"].append({"t1": start, "t2": end, "value": note[4]})
+                    nint = int(note[3])
+                    if nint < min_note:
+                        nint = min_note
         return sing_it
 
     def write_intervals(self, interval_arr, parent):
@@ -458,6 +475,14 @@ if argsdownloader is True and argsmove is False:
         _downloader.CreateBackgrounds()
 
 if argsdownloader is False and argsmove is True:
+    if args.generate_vxla:
+        if not os.path.isfile(f"{args.folder}/{args.song}/{args.song}.txt"):
+            print("TXT not found")
+            sys.exit(1)
+        else:
+            input=f"{args.folder}/{args.song}/{args.song}.txt"
+        u2ls = UltraStar2LetsSing(input)
+        u2ls.write_vxla_file(u2ls.map_data(u2ls.parse_file(), 48), f"{args.folder}/{args.song}/{args.song}.vxla")
     LetsSingMover = move()
     LetsSingMover.checkFiles()
     LetsSingMover.loadFiles()
