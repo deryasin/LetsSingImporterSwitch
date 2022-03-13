@@ -16,10 +16,11 @@ from PIL import Image
 
 # TODO: CHECK DATA AFTER SONDERZEICHEN
 # TODO: FIX RESULT SCREEN PICTURE
+# TODO: FIX NAME FILE GENERATION (Fixed, but not tested)
 # TODO: FIX LYRICS
-# TODO: ADD REMOVE FUNCTION
+# TODO: REMOVE FUNCTION
 # TODO: FIX HELPPAGE AND FILL WITH MORE INFORMATIONS
-# TODO: REVISE README
+# TODO: ADD README
 # TODO: IMPLEMENT TXT DOWNLOADER
 # TODO: ADD API FOR ULTRASTAR DBs (?)
 # TODO: REMOVE DEBUG OUTPUT / ADD VERBOSE (?)
@@ -379,17 +380,16 @@ class UltraStar2LetsSing:
                     start = last_page
                     sing_it["pages"].append(
                         {"t1": start, "t2": end, "value": ""})
-            elif args.keep_lyrics:
-                if note[0] == "F":
-                    start = float(note[1]) * 60 / bpm / 4 + gap
-                    end = start + float(note[2]) * 60 / bpm / 4
-                    if note[4] == 0:
-                        sing_it["text"].append({"t1": start, "t2": end, "value": ""})
-                    else:
-                        sing_it["text"].append({"t1": start, "t2": end, "value": note[4]})
-                    nint = int(note[3])
-                    if nint < min_note:
-                        nint = min_note
+            elif args.keep_lyrics and note[0] == "F":
+                start = float(note[1]) * 60 / bpm / 4 + gap
+                end = start + float(note[2]) * 60 / bpm / 4
+                if note[4] == 0:
+                    sing_it["text"].append({"t1": start, "t2": end, "value": ""})
+                else:
+                    sing_it["text"].append({"t1": start, "t2": end, "value": note[4]})
+                nint = int(note[3])
+                if nint < min_note:
+                    nint = min_note
         return sing_it
 
     def write_intervals(self, interval_arr, parent):
