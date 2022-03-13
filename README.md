@@ -1,5 +1,5 @@
 # LetsSingImporterSwitch
-[need a revision]
+[needs a revision]  
 This is a script for Lets Sing 2022, to import custom songs from Ultrastar.
 
 # Usage
