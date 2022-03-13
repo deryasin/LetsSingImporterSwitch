@@ -379,7 +379,7 @@ class UltraStar2LetsSing:
                     start = last_page
                     sing_it["pages"].append(
                         {"t1": start, "t2": end, "value": ""})
-            elif args.keeplyrics:
+            elif args.keep_lyrics:
                 if note[0] == "F":
                     start = float(note[1]) * 60 / bpm / 4 + gap
                     end = start + float(note[2]) * 60 / bpm / 4
