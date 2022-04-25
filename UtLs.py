@@ -11,6 +11,7 @@ import csv
 import io
 import xml.etree.cElementTree as ET
 from xml.dom import minidom
+import time
 import re
 from PIL import Image
 
