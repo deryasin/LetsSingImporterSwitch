@@ -436,10 +436,10 @@ class UltraStar2LetsSing:
         doc = ET.SubElement(root, "IntervalLayer", datatype="UINT8",
                             name="notes", units="", description="")
         self.write_intervals(sing_it["notes"], doc)
-
-        doc = ET.SubElement(root, "IntervalLayer", datatype="UINT8",
-                            name="notes_golden", units="", description="")
-        self.write_intervals(sing_it["notes_golden"], doc)
+        if len(sing_it["notes_golden"]) > 0:
+            doc = ET.SubElement(root, "IntervalLayer", datatype="UINT8",
+                                name="notes_golden", units="", description="")
+            self.write_intervals(sing_it["notes_golden"], doc)
 
         doc = ET.SubElement(root, "IntervalLayer", datatype="STRING",
                             name="pages", units="", description="")
