@@ -369,7 +369,6 @@ class UltraStar2LetsSing:
                 nint = int(note[3])
                 if nint < min_note:
                     nint = min_note
-
                 sing_it["notes"].append(
                     {"t1": start, "t2": end, "value": nint + pitch_corr})
                 if note[0] == "*":
@@ -505,3 +504,4 @@ if argsdownloader is False and argsmove is True:
     LetsSingMover.generateFiles()
     if not args.atmosphere_folder is False:
         LetsSingMover.move()
+
