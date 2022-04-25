@@ -224,14 +224,16 @@ class move:
     def loadMeta(self):
         self.AlreadyExists = self.SongAlreadyExists()
         if self.AlreadyExists is False:
-            print(self.ContentTSV)
-            if int(self.ContentTSV[len(self.ContentTSV)-1][1]) - 1 <= 899:
-                print("100 Customssongs full")
-                sys.exit(1)
-            if int(self.ContentTSV[len(self.ContentTSV)-1][1]) - 1 < 900:
+            if args.init:
                 self.SongMeta.update({"UID": int(999)})
             else:
-                self.SongMeta.update({"UID": int(self.ContentTSV[len(self.ContentTSV)-1][1]) - 1})
+                if int(self.ContentTSV[len(self.ContentTSV)-1][1]) - 1 <= 899:
+                    print("100 Customssongs full")
+                    sys.exit(1)
+                if int(self.ContentTSV[len(self.ContentTSV)-1][1]) - 1 < 900:
+                    self.SongMeta.update({"UID": int(999)})
+                else:
+                    self.SongMeta.update({"UID": int(self.ContentTSV[len(self.ContentTSV)-1][1]) - 1})
             self.SongMeta.update({"ID": self.Song})
             print(self.SongMeta)
         for line in self.ContentTXT:
