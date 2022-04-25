@@ -477,7 +477,7 @@ if argsdownloader is True and argsmove is False:
             print("TXT not found")
             sys.exit(1)
         u2ls = UltraStar2LetsSing(input)
-        u2ls.write_vxla_file(u2ls.map_data(u2ls.parse_file(), 48), f"{args.folder}/{args.song}/{args.song}.vxla")
+        u2ls.write_vxla_file(u2ls.map_data(u2ls.parse_file(), args.pitch), f"{args.folder}/{args.song}/{args.song}.vxla")
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download(args.url)
@@ -496,7 +496,7 @@ if argsdownloader is False and argsmove is True:
         else:
             input=f"{args.folder}/{args.song}/{args.song}.txt"
         u2ls = UltraStar2LetsSing(input)
-        u2ls.write_vxla_file(u2ls.map_data(u2ls.parse_file(), 48), f"{args.folder}/{args.song}/{args.song}.vxla")
+        u2ls.write_vxla_file(u2ls.map_data(u2ls.parse_file(), args.pitch), f"{args.folder}/{args.song}/{args.song}.vxla")
     LetsSingMover = move()
     LetsSingMover.checkFiles()
     LetsSingMover.loadFiles()
