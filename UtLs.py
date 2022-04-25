@@ -381,6 +381,15 @@ class UltraStar2LetsSing:
                 last_page = end
                 sing_it["pages"].append(
                     {"t1": start, "t2": end, "value": ""})
+            elif note[0] == "F":
+                start = float(note[1]) * 60 / bpm / 4 + gap
+                end = start + float(note[2]) * 60 / bpm / 4
+                sing_it["text"].append({"t1": start, "t2": end, "value": note[4]})
+                nint = int(note[3])
+                if nint < min_note:
+                    nint = min_note
+                sing_it["notes"].append(
+                    {"t1": start, "t2": end, "value": 1})
             elif note[0] == "E":
                 if end > last_page:
                     start = last_page
