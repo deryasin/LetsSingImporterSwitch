@@ -319,7 +319,7 @@ class move:
             for folder in ["audio", "audio_preview", "backgrounds", "covers", "videos", "vxla"]:
                 os.makedirs(f"{self.AtmosphereMediaFolder}/{folder}")
                 if folder == "backgrounds":
-                    for background_folder in ["Results", "InGameLoading"]:
+                    for background_folder in ["Result", "InGameLoading"]:
                         os.makedirs(f"{self.AtmosphereMediaFolder}/backgrounds/{background_folder}")
         if not os.path.exists(self.AtmosphereDLCFolder):
             os.makedirs(self.AtmosphereDLCFolder)
@@ -329,7 +329,7 @@ class move:
         shutil.copy(f"{self.SongFolder}/{self.Song}.ogg", f"{self.AtmosphereMediaFolder}/audio_preview/{self.Song}_preview.ogg")
         shutil.copy(f"{self.SongFolder}/{self.Song}_InGameLoading.png",
                     f"{self.AtmosphereMediaFolder}/backgrounds/InGameLoading/{self.Song}_InGameLoading.png")
-        shutil.copy(f"{self.SongFolder}/{self.Song}_Result.png", f"{self.AtmosphereMediaFolder}/backgrounds/Results/{self.Song}_Result.png")
+        shutil.copy(f"{self.SongFolder}/{self.Song}_Result.png", f"{self.AtmosphereMediaFolder}/backgrounds/Result/{self.Song}_Result.png")
         shutil.copy(f"{self.SongFolder}/{self.Song}.png", f"{self.AtmosphereMediaFolder}/covers/{self.Song}.png")
         shutil.copy(f"{self.SongFolder}/{self.Song}.vxla", f"{self.AtmosphereMediaFolder}/vxla/{self.Song}.vxla")
         shutil.copy(f"{self.SongFolder}/{self.Song}.mp4", f"{self.AtmosphereMediaFolder}/videos/{self.Song}.mp4")
