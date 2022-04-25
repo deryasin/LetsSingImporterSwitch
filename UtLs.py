@@ -27,7 +27,7 @@ from PIL import Image
 # TODO: REMOVE DEBUG OUTPUT / ADD VERBOSE (?)
 # TODO: REMOVE 100 SONGS LIMIT
 # TODO: ASK BEFORE REPLACE
-# TODO: FIX NOTES AFTER LYRICS WITHOUT NOTES HAVE THE WRONG LYRICS / Fix Lyrics Generation
+# TODO: Last Note of the most song is missing
 parser = argparse.ArgumentParser(description= "LetsSingImporter - Please choose a Mode!")
 parser.add_argument('--downloader', help="Mode for downloading Youtube Videos and converting them to Lets Sing Files", action='store_true')
 parser.add_argument('--move', help="Mode to move files into the needed Filetree", action='store_true')
