@@ -192,8 +192,8 @@ class move:
     def loadFiles(self):
         self.ContentTXT = open(f"{self.BaseFilesFolder}/name.txt").readlines()
         self.ContentTSV = list(csv.reader(open(f"{self.BaseFilesFolder}/SongsDLC.tsv").readlines(), delimiter="	"))
-        shutil.copy(f"{self.BaseFilesFolder}/name.txt", f"{self.BaseFilesFolder}/name.txt_bk")
-        shutil.copy(f"{self.BaseFilesFolder}/SongsDLC.tsv", f"{self.BaseFilesFolder}/SongsDLC.tsv_bk")
+        shutil.copy(f"{self.BaseFilesFolder}/name.txt", f"{self.BaseFilesFolder}/name.txt_bk{int(time.time())}")
+        shutil.copy(f"{self.BaseFilesFolder}/SongsDLC.tsv", f"{self.BaseFilesFolder}/SongsDLC.tsv_bk{int(time.time())}")
         self.FileTXT = open(f"{self.BaseFilesFolder}/name.txt", "w")
         self.FileTSV = open(f"{self.BaseFilesFolder}/SongsDLC.tsv", "w")
         self.FileXML = open(f"{self.SongFolder}/{self.Song}_meta.xml", "w")
