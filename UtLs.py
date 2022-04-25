@@ -71,6 +71,7 @@ else:
         parser.add_argument('--generate-vxla', action='store_true', help="Generate VXLA File")
         parser.add_argument('--pitch', default=48, help="Note Correction")
         parser.add_argument('--keep-lyrics', action='store_true', help="Keeps the text the lyrics for freestyle notes, but breaks the lyrics underneath the notes")
+        parser.add_argument('--init', action='store_true', help="First Run")
     else:
         parser.print_help()
         sys.exit(0)
