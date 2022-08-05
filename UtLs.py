@@ -44,8 +44,6 @@ if args.downloader == True and args.move == False:
     parser.add_argument('--txt', default=False, help="TXT File from Ultrastar")
     parser.add_argument('--generate-vxla', action='store_true', help="Generate VXLA File")
     parser.add_argument('--pitch', default=48, help="Note Correction, 48 default, use -70 for notes over 100")
-    parser.add_argument('--keep-lyrics', action='store_true',
-                        help="Keeps the text the lyrics for freestyle notes, but breaks the lyrics on screen under the notes")
     parser.add_argument('--randomize', action='store_true',
                         help="(NOT IMPLEMENTED) Activate to set random Images for backgrounds")
     parser.add_argument('--folder', default="./songs", help="Folder to save files")
@@ -70,7 +68,6 @@ else:
         parser.add_argument("--linetwo", default=None)
         parser.add_argument('--generate-vxla', action='store_true', help="Generate VXLA File")
         parser.add_argument('--pitch', default=48, help="Note Correction, 48 default, use -70 for notes over 100")
-        parser.add_argument('--keep-lyrics', action='store_true', help="Keeps the text the lyrics for freestyle notes, but breaks the lyrics underneath the notes")
         parser.add_argument('--init', action='store_true', help="First Run")
     else:
         parser.print_help()
@@ -394,16 +391,6 @@ class UltraStar2LetsSing:
                     start = last_page
                     sing_it["pages"].append(
                         {"t1": start, "t2": end, "value": ""})
-            elif args.keep_lyrics and note[0] == "F":
-                start = float(note[1]) * 60 / bpm / 4 + gap
-                end = start + float(note[2]) * 60 / bpm / 4
-                if note[4] == 0:
-                    sing_it["text"].append({"t1": start, "t2": end, "value": ""})
-                else:
-                    sing_it["text"].append({"t1": start, "t2": end, "value": note[4]})
-                nint = int(note[3])
-                if nint < min_note:
-                    nint = min_note
         return sing_it
 
     def write_intervals(self, interval_arr, parent):
